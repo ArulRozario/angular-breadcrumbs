@@ -120,6 +120,42 @@
           }
         }
       }
-    }},
+    },
+    "ng-breadcrumbs": {
+      "projectType": "library",
+      "root": "projects/ng-breadcrumbs",
+      "sourceRoot": "projects/ng-breadcrumbs/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ng-breadcrumbs/tsconfig.lib.json",
+            "project": "projects/ng-breadcrumbs/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ng-breadcrumbs/src/test.ts",
+            "tsConfig": "projects/ng-breadcrumbs/tsconfig.spec.json",
+            "karmaConfig": "projects/ng-breadcrumbs/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ng-breadcrumbs/tsconfig.lib.json",
+              "projects/ng-breadcrumbs/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
   "defaultProject": "angular-breadcrumbs"
 }

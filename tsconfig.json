@@ -17,7 +17,15 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "ng-breadcrumbs": [
+        "dist/ng-breadcrumbs"
+      ],
+      "ng-breadcrumbs/*": [
+        "dist/ng-breadcrumbs/*"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
