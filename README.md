@@ -7,43 +7,43 @@ npm install ng8-breadcrumbs --save
 ```
 
 #### 1. Import the `BreadcrumbModule`
+
 Import `BreadcrumbModule` in the NgModule of your application.
 
 ```typescript
-import {BrowserModule} from "@angular/platform-browser";
-import {NgModule} from '@angular/core';
-import {BreadcrumbModule} from 'angular-crumbs';
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from "@angular/core";
+import { BreadcrumbModule } from "angular-crumbs";
 
 @NgModule({
-    imports: [
-        BrowserModule,
-        BreadcrumbModule
-    ],
-    bootstrap: [AppComponent]
+  imports: [BrowserModule, BreadcrumbModule],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}
 ```
 
 #### 2. Set breadcumbs in `app.routes`
+
 ```javascript
-export const rootRouterConfig: Routes = [  
-    {path: '', redirectTo: 'home', pathMatch: 'full'},  
-    {path: 'home', ..., data: { breadcrumb: 'Home'}},  
-    {path: 'about', ..., data: { breadcrumb: 'About'}},  
-    {path: 'github', ..., data: { breadcrumb: 'GitHub'},  
-        children: [  
-            {path: '', ...},  
-            {path: ':org', ..., data: { breadcrumb: 'Repo List'},  
-                children: [  
-                    {path: '', ...},  
-                    {path: ':repo', ..., data: { breadcrumb: 'Repo',navigable:true}}  
-                ]  
-        }]  
-    }  
+export const rootRouterConfig: Routes = [
+    {path: '', redirectTo: 'home', pathMatch: 'full'},
+    {path: 'home', ..., data: { breadcrumb: 'Home'}},
+    {path: 'about', ..., data: { breadcrumb: 'About'}},
+    {path: 'github', ..., data: { breadcrumb: 'GitHub'},
+        children: [
+            {path: '', ...},
+            {path: ':org', ..., data: { breadcrumb: 'Repo List'},
+                children: [
+                    {path: '', ...},
+                    {path: ':repo', ..., data: { breadcrumb: 'Repo',navigable:true}}
+                ]
+        }]
+    }
 ];
 ```
 
 #### 3. Update the markup
+
 - Import the `style.css` into your web page
 - Add `<breadcrumb></breadcrumb>` tag in template of your application component.
 
@@ -51,32 +51,51 @@ export const rootRouterConfig: Routes = [
 
 ### Template Customization
 
-You can BYO template using the breadcrumb's ng-content transclude. 
+You can BYO template using the breadcrumb's ng-content transclude.
 
 #### bootstrap breadcrumb:
 
-```html 
-<breadcrumb #parent>  
+```html
+<breadcrumb #parent>
   <ol class="breadcrumb">
-  <ng-container *ngFor="let breadcrumb of parent.breadcrumbs">
-       <li *ngIf="!breadcrumb.route.terminal" class="breadcrumb-item">
-        <a href="" *ngIf=" [routerLink]="[breadcrumb.route.url]">{{ breadcrumb.route.displayName }}</a>
-        <a href="">{{ breadcrumb.route.displayName }}</a>
+    <ng-container *ngFor="let breadcrumb of parent.breadcrumbs">
+      <li *ngIf="!breadcrumb.terminal" class="breadcrumb-item">
+        <a
+          href=""
+          *ngIf="breadcrumb.routeData?.navigable"
+          [routerLink]="[breadcrumb.url]"
+          >{{ breadcrumb.displayName }}</a
+        >
+        <a href="" *ngIf="!breadcrumb.routeData?.navigable"
+          >{{ breadcrumb.displayName }}</a
+        >
       </li>
-      <li *ngIf="breadcrumb.route.terminal" class="breadcrumb-item active" aria-current="page">{{ breadcrumb.route.displayName }}</li>
-    </ng-container>    
+      <li
+        *ngIf="breadcrumb.terminal"
+        class="breadcrumb-item active"
+        aria-current="page"
+      >
+        {{ breadcrumb.displayName }}
+      </li>
+    </ng-container>
   </ol>
-</breadcrumb>  
+</breadcrumb>
 ```
 
 #### @angular/material breadcrumb
 
 ```html
 <breadcrumb #parent>
-    <span class="breadcrumb" *ngFor="let route of parent.breadcrumbs">
-        <a mat-button *ngIf="!route.terminal" href="" [routerLink]="[route.url]">{{ route.displayName }}</a>
-        <a mat-button *ngIf="route.terminal">{{ route.displayName }}</a>
-    </span>
+  <span class="breadcrumb" *ngFor="let breadcrumb of parent.breadcrumbs">
+    <a
+      mat-button
+      *ngIf="!breadcrumb.terminal"
+      href=""
+      [routerLink]="[breadcrumb.url]"
+      >{{ breadcrumb.displayName }}</a
+    >
+    <a mat-button *ngIf="breadcrumb.terminal">{{ breadcrumb.displayName }}</a>
+  </span>
 </breadcrumb>
 ```
 
@@ -85,36 +104,37 @@ You can BYO template using the breadcrumb's ng-content transclude.
 ```html
 <p-breadcrumb [model]="breadcrumbs"></p-breadcrumb>
 ```
+
 ```typescript
 export class AppComponent {
-    breadcrumbs: MenuItem[];
+  breadcrumbs: MenuItem[];
 
-    constructor(private breadcrumbService: BreadcrumbService) { }
+  constructor(private breadcrumbService: BreadcrumbService) {}
 
-    ngOnInit() {
-        this.breadcrumbService.breadcrumbChanged.subscribe(crumbs => {
-            this.breadcrumbs = crumbs.map(c => this.toPrimeNgMenuItem(c));
-        });
-    }
+  ngOnInit() {
+    this.breadcrumbService.breadcrumbChanged.subscribe(crumbs => {
+      this.breadcrumbs = crumbs.map(c => this.toPrimeNgMenuItem(c));
+    });
+  }
 
-    private toPrimeNgMenuItem(crumb: Breadcrumb) {
-        return <MenuItem>{ label: crumb.displayName, url: `#${crumb.url}`}
-    }
+  private toPrimeNgMenuItem(crumb: Breadcrumb) {
+    return <MenuItem>{ label: crumb.displayName, url: `#${crumb.url}` };
+  }
 }
 ```
 
-### Dynamic breadcrumbs 
+### Dynamic breadcrumbs
 
-Use `BreadcrumbService` to set the breadcrumb description dynamically. [See full demo example](https://github.com/emilol/angular-crumbs/blob/master/demos/demo-angular-six/src/app/shared/github/repo-detail/repo-detail.component.ts)
+Use `BreadcrumbService` to set the breadcrumb description dynamically.
 
 ```typescript
 ngOnInit() {
-  ...      
+  ...
   this.github
     .getRepoForOrg(this.org, this.repo)
     .subscribe(repoDetails => {
         ...
-        this.breadcrumbService.changeBreadcrumb(this.route.snapshot, repoDetails.name);
+        this.breadcrumbService.changeBreadcrumb(this.breadcrumb.snapshot, repoDetails.name);
 
   });
   ...
@@ -123,7 +143,7 @@ ngOnInit() {
 
 ### Dynamic page titles
 
-Use `BreadcrumbService` to subscribe to breadcrumb changes. [See full demo example](https://github.com/emilol/angular-crumbs/blob/master/demos/demo-angular-six/projects/bootstrap-demo/src/app/app.component.ts)
+Use `BreadcrumbService` to subscribe to breadcrumb changes.
 
 ```typescript
 ngOnInit() {
@@ -134,4 +154,5 @@ ngOnInit() {
 ```
 
 # License
- [MIT](/LICENSE)
+
+[MIT](/LICENSE)
