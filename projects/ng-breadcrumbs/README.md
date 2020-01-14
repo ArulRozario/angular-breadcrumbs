@@ -3,7 +3,7 @@
 ## Installation
 
 ```shell
-npm install ng8-breadcrumbs --save
+npm install angular8-breadcrumbs --save
 ```
 
 #### 1. Import the `BreadcrumbModule`
