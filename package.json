@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "publish-lib": "npm version patch --prefix projects/ng-breadcrumbs && ng build ng-breadcrumbs && cd dist/ng-breadcrumbs && npm publish",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

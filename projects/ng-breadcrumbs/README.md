@@ -13,7 +13,7 @@ Import `BreadcrumbModule` in the NgModule of your application.
 ```typescript
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
-import { BreadcrumbModule } from "angular-crumbs";
+import { BreadcrumbModule } from "angular8-breadcrumbs";
 
 @NgModule({
   imports: [BrowserModule, BreadcrumbModule],
